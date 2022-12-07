@@ -4,6 +4,7 @@ export function Header(props) {
   function handleTaskInput(event) {
     if(event.key === 'Enter') {
       props.onAddItem(event.target.value)
+      event.target.value='';
     }
   }
 

@@ -10,11 +10,11 @@ function App() {
   const [ todos, setTodos ] = useState([]);
   const [ noneCompletedItemsCount, setNoneCompletedItemsCount ] = useState(0);
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-        .then( response => response.json())
-        .then(setTodos)
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://jsonplaceholder.typicode.com/todos')
+  //       .then( response => response.json())
+  //       .then(setTodos)
+  // }, []);
 
   useEffect(() => {
       const uncompleted = todos.filter( todo => !todo.completed );
@@ -27,27 +27,33 @@ function App() {
   const addTodo = (title) => {
     const newTodos = todos.concat([{ id: Date.now(), title, completed: false }])
     setTodos(newTodos);
-    // todos = [ ...todos, { id: Date.now(), title, completed: false } ]
   }
 
   const removeTodo = (todoToRemove) => {
-    todos = todos.filter( currentTodo => currentTodo.id !== todoToRemove.id );
-    console.log(todos);
+    const newTodos = todos.filter( currentTodo => currentTodo.id !== todoToRemove.id );
+    setTodos(newTodos);
   }
 
-  const markAsCompleted = () => {
-
+  const markAsCompleted = (todoToComplete) => {
+    todoToComplete.completed = !todoToComplete.completed;
+    setTodos([...todos]);
   }
 
   const clearAllCompletedItems = () => {
-    todos = todos.filter( currentTodo => !currentTodo.completed );
+    const newTodos = todos.filter( currentTodo => !currentTodo.completed );
+    setTodos(newTodos);
     console.log(todos);
   }
 
   const toggleAllItems = (checkedValue) => {
-    todos = todos.map( todo => ({ ...todo, completed: checkedValue }));
+    const newTodos = todos.map( todo => ({ ...todo, completed: checkedValue }));
     // todos = todos.map( todo => Object.assign({}, todo, {completed: checkedValue}));
+    setTodos(newTodos);
     console.log(todos);
+  }
+
+  const doubleClickEdit = (textValue) => {
+    
   }
 
   return (
@@ -57,6 +63,8 @@ function App() {
                 text="What needs to be done?"  />
         <Main items={todos}
               onToggleAll={toggleAllItems}
+              onRemoveItem={removeTodo}
+              onMarkComplete={markAsCompleted}
         />
         <Footer
             itemLeftCount={noneCompletedItemsCount}
