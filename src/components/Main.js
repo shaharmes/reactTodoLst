@@ -1,6 +1,6 @@
 import {TodosList} from "./TodosList";
 
-export function Main({ items, onToggleAll, onRemoveItem, onMarkComplete }) {
+export function Main({ items, onToggleAll, onRemoveItem, onMarkComplete, onDblClick }) {
 
   function handleToggleAll(event) {
     onToggleAll(event.target.checked);
@@ -14,6 +14,7 @@ export function Main({ items, onToggleAll, onRemoveItem, onMarkComplete }) {
         <TodosList items={items}
                    onRemoveItem={onRemoveItem}
                    onMarkComplete = {onMarkComplete}
+                   onDblClick = {onDblClick}
                    />
       </section>
   );

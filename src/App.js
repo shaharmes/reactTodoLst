@@ -52,8 +52,9 @@ function App() {
     console.log(todos);
   }
 
-  const doubleClickEdit = (textValue) => {
-    
+  const doubleClickEdit = (textValue, item) => {
+    item.title = textValue;
+    setTodos([...todos]);
   }
 
   return (
@@ -65,7 +66,7 @@ function App() {
               onToggleAll={toggleAllItems}
               onRemoveItem={removeTodo}
               onMarkComplete={markAsCompleted}
-        />
+              onDblClick={doubleClickEdit}/>
         <Footer
             itemLeftCount={noneCompletedItemsCount}
             onClearCompleted={clearAllCompletedItems}/>
