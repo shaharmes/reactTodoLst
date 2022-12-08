@@ -37,6 +37,7 @@ export function TodosList({ items, onRemoveItem, onMarkComplete, onDblClick }) {
               </div>
               <input className="edit"
                      onKeyUp={(event)=>handleEnter(event,item)}
+                     key={item.title}
                      defaultValue={item.title}/>
             </li>
         ))}
