@@ -1,18 +1,22 @@
+import { useContext } from "react";
+import { todoContext } from "../providers/todoContext";
 
-export function Header(props) {
+export function Header({title}) {
+
+  const {addTodo} = useContext(todoContext)
 
   function handleTaskInput(event) {
     if(event.key === 'Enter') {
-      props.onAddItem(event.target.value)
+      addTodo(event.target.value)
       event.target.value='';
     }
   }
 
   return (
       <header className="header">
-        <h1>{props.title}</h1>
+        <h1>{title}</h1>
         <input className="new-todo"
-               placeholder={props.text}
+               placeholder={"What needs to be done?"}
                onKeyUp={handleTaskInput}
                autoFocus/>
       </header>

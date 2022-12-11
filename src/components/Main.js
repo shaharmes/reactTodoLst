@@ -1,9 +1,13 @@
+import { useContext } from "react";
+import { todoContext } from "../providers/todoContext";
 import {TodosList} from "./TodosList";
 
-export function Main({ items, onToggleAll, onRemoveItem, onMarkComplete, onDblClick }) {
+export function Main() {
+
+  const {toggleAllItems} = useContext(todoContext);
 
   function handleToggleAll(event) {
-    onToggleAll(event.target.checked);
+    toggleAllItems(event.target.checked);
   }
 
   return (
@@ -11,11 +15,7 @@ export function Main({ items, onToggleAll, onRemoveItem, onMarkComplete, onDblCl
         <input className="toggle-all"
                onChange={handleToggleAll}
                type="checkbox"/>
-        <TodosList items={items}
-                   onRemoveItem={onRemoveItem}
-                   onMarkComplete = {onMarkComplete}
-                   onDblClick = {onDblClick}
-                   />
+        <TodosList />
       </section>
   );
 }

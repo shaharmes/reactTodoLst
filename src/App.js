@@ -1,76 +1,48 @@
 import './App.css';
-import {Header} from "./components/Header";
-import {Main} from "./components/Main";
-import {Footer} from "./components/Footer";
-import {useEffect, useState} from "react";
+import './providers/todoContext';
+import { TodosApp } from './components/todosApp';
+import { useRef, useState } from 'react';
 
 
 
 function App() {
-  const [ todos, setTodos ] = useState([]);
-  const [ noneCompletedItemsCount, setNoneCompletedItemsCount ] = useState(0);
 
-  // useEffect(() => {
-  //   fetch('https://jsonplaceholder.typicode.com/todos')
-  //       .then( response => response.json())
-  //       .then(setTodos)
-  // }, []);
+  const [user, setUser] = useState(null);
 
-  useEffect(() => {
-      const uncompleted = todos.filter( todo => !todo.completed );
-      setNoneCompletedItemsCount(uncompleted.length);
-  }, [todos])
+  const [apps, setApps] = useState(['todos', 'task', 'backlog']);
+  const inputRef = useRef(null);
+  const userRef = useRef(null);
 
-  const appTitle = 'TodosApp';
-
-
-  const addTodo = (title) => {
-    const newTodos = todos.concat([{ id: Date.now(), title, completed: false }])
-    setTodos(newTodos);
+  function addApp(){
+    const text = inputRef.current.value;
+    apps.push(text);
+    setApps([...apps]);
   }
 
-  const removeTodo = (todoToRemove) => {
-    const newTodos = todos.filter( currentTodo => currentTodo.id !== todoToRemove.id );
-    setTodos(newTodos);
+  function logIn(){
+    const admin = userRef.current.value
+    setUser(admin);
   }
 
-  const markAsCompleted = (todoToComplete) => {
-    todoToComplete.completed = !todoToComplete.completed;
-    setTodos([...todos]);
-  }
-
-  const clearAllCompletedItems = () => {
-    const newTodos = todos.filter( currentTodo => !currentTodo.completed );
-    setTodos(newTodos);
-    console.log(todos);
-  }
-
-  const toggleAllItems = (checkedValue) => {
-    const newTodos = todos.map( todo => ({ ...todo, completed: checkedValue }));
-    // todos = todos.map( todo => Object.assign({}, todo, {completed: checkedValue}));
-    setTodos(newTodos);
-    console.log(todos);
-  }
-
-  const doubleClickEdit = (textValue, item) => {
-    item.title = textValue;
-    setTodos([...todos]);
-  }
 
   return (
-      <section className="todoapp">
-        <Header title={appTitle}
-                onAddItem={addTodo}
-                text="What needs to be done?"  />
-        <Main items={todos}
-              onToggleAll={toggleAllItems}
-              onRemoveItem={removeTodo}
-              onMarkComplete={markAsCompleted}
-              onDblClick={doubleClickEdit}/>
-        <Footer
-            itemLeftCount={noneCompletedItemsCount}
-            onClearCompleted={clearAllCompletedItems}/>
-      </section>
+    <>
+      {user ? (
+        <>
+          <input ref={inputRef} type="text"/>
+          <button onClick={addApp}>ADD LIST</button>
+          {apps.map(app => (
+            <TodosApp appName = {app} />
+          ))}
+        </>
+        ) : (
+          <>
+            <input type="text" key={'user'} ref={userRef} placeholder={'username'}/>
+            <input type="password" placeholder={'password'}/>
+            <button onClick={logIn}>sign in</button>
+          </>
+        )}
+    </>
   )
 }
 
