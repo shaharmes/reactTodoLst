@@ -12,7 +12,6 @@ export function useTodos() {
 
   const addTodo = (title) => {
     const newTodos = todos.concat([{ id: Date.now(), title, completed: false }])
-    console.log("ye")
     setTodos(newTodos);
   }
 
@@ -29,14 +28,13 @@ export function useTodos() {
   const clearAllCompletedItems = () => {
     const newTodos = todos.filter( currentTodo => !currentTodo.completed );
     setTodos(newTodos);
-    console.log(todos);
+    
   }
 
   const toggleAllItems = (checkedValue) => {
     const newTodos = todos.map( todo => ({ ...todo, completed: checkedValue }));
     // todos = todos.map( todo => Object.assign({}, todo, {completed: checkedValue}));
     setTodos(newTodos);
-    console.log(todos);
   }
 
   const doubleClickEdit = (textValue, item) => {

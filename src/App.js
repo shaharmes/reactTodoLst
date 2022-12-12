@@ -1,47 +1,43 @@
 import './App.css';
 import './providers/todoContext';
 import { TodosApp } from './components/todosApp';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './context/auth';
+import { AppContext } from './context/appContext';
+
 
 
 
 function App() {
 
-  const [user, setUser] = useState(null);
+  const {currentUser} = useContext(AuthContext);
+  let navigate = useNavigate();
 
-  const [apps, setApps] = useState(['todos', 'task', 'backlog']);
+  useEffect(() => {
+    (!currentUser && navigate('/sign-in'))
+  }, [currentUser, navigate])
+  
+  
+
+  const {apps, setApps} = useContext(AppContext);
   const inputRef = useRef(null);
-  const userRef = useRef(null);
 
   function addApp(){
     const text = inputRef.current.value;
-    apps.push(text);
+    apps.push(<TodosApp appName = {text} key={Math.random()} />);
+    console.log(apps);
     setApps([...apps]);
   }
 
-  function logIn(){
-    const admin = userRef.current.value
-    setUser(admin);
-  }
-
-
   return (
     <>
-      {user ? (
-        <>
-          <input ref={inputRef} type="text"/>
-          <button onClick={addApp}>ADD LIST</button>
-          {apps.map(app => (
-            <TodosApp appName = {app} />
-          ))}
-        </>
-        ) : (
-          <>
-            <input type="text" key={'user'} ref={userRef} placeholder={'username'}/>
-            <input type="password" placeholder={'password'}/>
-            <button onClick={logIn}>sign in</button>
-          </>
-        )}
+      <input ref={inputRef} type="text"/>
+      <button onClick={addApp}>ADD LIST</button>
+      {apps.map(app => (
+        app
+      ))}
+      
     </>
   )
 }

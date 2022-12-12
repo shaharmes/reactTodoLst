@@ -8,10 +8,8 @@ export function TodosList() {
   const todoApi = useContext(todoContext)
   const {todos, removeTodo, markAsCompleted, doubleClickEdit} = todoApi;
   
-  console.log(todoApi)
 
   function handleDoubleClick(event, item) {
-    console.log(item);
     editToggle = item.id;
     setToggle(editToggle);
   }
